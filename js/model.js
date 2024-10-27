@@ -35,6 +35,7 @@ const deleteItem = (id) => {
     })
 
     budget.splice(targetID, 1);
+    calcBudget();
     saveToLS();
 }
 
@@ -43,6 +44,7 @@ const calcBudget = () => {
     let totalIncome = 0;
     let totalExpences = 0;
     let totalBudget = 0;
+    let percentExpences = 0;
 
     budget.forEach(element => {
 
@@ -54,8 +56,15 @@ const calcBudget = () => {
 
     });
 
-    
+    totalBudget = totalIncome - totalExpences;
 
+    if(totalIncome){
+        percentExpences = Math.round((totalExpences * 100) / totalIncome);
+    }
+
+    return {
+        totalIncome, totalExpences, totalBudget, percentExpences,
+    }
 }
 
-export default {forgeData, saveToLS, deleteItem, calcBudget};
+export default {budget, forgeData, saveToLS, deleteItem, calcBudget};

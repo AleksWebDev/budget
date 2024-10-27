@@ -1,6 +1,16 @@
 import view from './view.js';
 import model from './model.js';
 
+window.addEventListener('DOMContentLoaded', function(){
+    model.budget.forEach(item => {
+        view.renderRecords(item);
+    })
+
+    view.displayMonthAndYear();
+    const recordsBudget = model.calcBudget();
+    view.displayRecords(recordsBudget);
+})
+
 view.elements.form.addEventListener('submit', function(e){
 
     e.preventDefault();
@@ -13,7 +23,9 @@ view.elements.form.addEventListener('submit', function(e){
     view.renderRecords(data);
     view.resetForm();
     //Display data 
-    model.calcBudget();
+    const recordsBudget = model.calcBudget();
+    view.displayRecords(recordsBudget);
+    model.saveToLS();
 })
 
 view.elements.list.addEventListener('click', function(e){
@@ -21,6 +33,8 @@ view.elements.list.addEventListener('click', function(e){
         const targetElem = parseInt(e.target.parentElement.parentElement.parentElement.dataset.id);
         const targetElementDOM = e.target.parentElement.parentElement.parentElement;
         model.deleteItem(targetElem);
+        const data = model.calcBudget();
+        view.displayRecords(data);
         view.deleteItem(targetElementDOM);
     }
 })
